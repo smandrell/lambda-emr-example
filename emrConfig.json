@@ -1,0 +1,97 @@
+{
+  "emrRegion": "us-west-2",
+  "sparkJobConfig": {
+    "name": "Spark",
+    "actionOnFailure": "TERMINATE",
+    "jar": "command-runner.jar",
+    "args": ["spark-submit", "--master", "yarn", "--deploy-mode", "cluster", "--class", "your.package.name.Main", "arg1", "arg2", "arg3"]
+  },
+  "additionalInfo": "{\"instanceAwsClientConfiguration\": {\"proxyHost\": \"your.proxyHost.com\", \"proxyPort\": 8099}}",
+  "applications": [
+    {
+      "name": "Spark"
+    }
+  ],
+  "autoScalingRole": "EMR_AutoScaling_DefaultRole",
+  "bootstrapActions": [
+    {
+      "name": "BootstrapAction1",
+      "scriptBootstrapAction": {
+        "path": "s3://yourBucket/path/to/bootstrapAction1.sh",
+        "args": ["arg1"]
+      }
+    },
+    {
+      "name": "BootstrapAction2",
+      "scriptBootstrapAction": {
+        "path": "s3://yourBucket/path/to/bootStrapAction2.sh"
+      }
+    }
+  ],
+  "customAmiId": "12345",
+  "instances": {
+    "ec2SubnetIds": [
+      "subnet-12345"
+    ],
+    "instanceGroups": [
+      {
+        "ebsConfiguration": {
+          "ebsBlockDeviceConfigs": [
+            {
+              "volumeSpecification": {
+                "sizeInGB": 10,
+                "volumeType": "gp2"
+              },
+              "volumesPerInstance": 1
+            }
+          ]
+        },
+        "instanceCount": 1,
+        "instanceRole": "MASTER",
+        "instanceType": "m4.4xlarge",
+        "name": "MasterGroup"
+      },
+      {
+        "ebsConfiguration": {
+          "ebsBlockDeviceConfigs": [
+            {
+              "volumeSpecification": {
+                "sizeInGB": 10,
+                "volumeType": "gp2"
+              },
+              "volumesPerInstance": 1
+            }
+          ]
+        },
+        "instanceCount": 5,
+        "instanceRole": "CORE",
+        "instanceType": "m4.4xlarge",
+        "name": "CoreGroup"
+      }
+    ],
+    "keepJobFlowAliveWhenNoSteps": false,
+    "terminationProtected": false
+  },
+  "jobFlowRole": "Role-For-Spark-Job",
+  "logUri": "s3://yourBucket/path/to/emrLogs",
+  "name": "name-of-spark-job",
+  "releaseLabel": "emr-5.19.0",
+  "repoUpgradeOnBoot": "SECURITY",
+  "securityConfiguration": "Your-Security-Config",
+  "serviceRole": "EMR_DefaultRole",
+  "tags": [
+    {
+      "key": "Key1",
+      "value": "Value1"
+    },
+    {
+      "key": "Key2",
+      "value": "Value2"
+    },
+    {
+      "key": "OwnerContact",
+      "value": "yourEmail@example.com"
+    }
+  ],
+  "visibleToAllUsers": true
+}
